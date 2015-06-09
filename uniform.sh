@@ -42,6 +42,6 @@ for file in $files; do
         if test $exit_code -ne 0; then
             exit $exit_code
         fi
-        mv $tempfile $file
+        mv $tempfile $file || exit $?
     fi
 done
