@@ -37,11 +37,7 @@ for file in $files; do
 
     if test $extension = "js"; then
         tempfile=`mktemp`
-        node "$uniformdir/pretty-generator.js" $file 1>$tempfile
-        exit_code=$?
-        if test $exit_code -ne 0; then
-            exit $exit_code
-        fi
+        node "$uniformdir/pretty-generator.js" $file 1>$tempfile || exit $?
         mv $tempfile $file || exit $?
     fi
 done
