@@ -18,7 +18,13 @@ args=$@
 # $args is passed to allow specifying specific files
 files=`git ls-tree -r --name-only HEAD $args`
 
-if !(git diff --name-only --exit-code $args); then
+if test -z "$files"; then
+    git status -su --ignored $args
+    echo "Did not find any files under git control."
+    exit 2
+fi
+
+if !(git diff --name-only --exit-code $files); then
     echo "The files listed above have been changed since last commit."
 
     if test -z "$use_force"; then
@@ -29,7 +35,7 @@ if !(git diff --name-only --exit-code $args); then
     fi
 fi
 
-uniformdir=dirname $0
+uniformdir=`dirname $0`
 for file in $files; do
     # run formatter on file
     filename=$(basename $file)
