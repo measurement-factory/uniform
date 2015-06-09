@@ -29,6 +29,7 @@ if !(git diff --name-only --exit-code $args); then
     fi
 fi
 
+uniformdir=dirname $0
 for file in $files; do
     # run formatter on file
     filename=$(basename $file)
@@ -36,7 +37,7 @@ for file in $files; do
 
     if test $extension = "js"; then
         tempfile=`mktemp`
-        node ./lib/index.js $file 1>$tempfile
+        node "$uniformdir/pretty-generator.js" $file 1>$tempfile
         exit_code=$?
         if test $exit_code -ne 0; then
             exit $exit_code
