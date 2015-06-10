@@ -43,7 +43,7 @@ for file in $files; do
 
     if test $extension = "js"; then
         tempfile=`mktemp`
-        node "$uniformdir/pretty-generator.js" $file 1>$tempfile || exit $?
+        node "$uniformdir/javascript-formatter" $file 1>$tempfile || exit $?
         mv $tempfile $file || exit $?
     fi
 done
