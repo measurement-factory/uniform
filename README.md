@@ -1,8 +1,12 @@
-# uniform
+# UniForm
 
-Uniform is designed to format source code.
+UniForm orchestrates source code formating,
+with an emphasis on serving multiple, diverse software projects with a single command.
+
 The only language currently supported is JavaScript.
 C++ support is in the works.
+
+Currently, UniForm can only format git-controlled sources.
 
 ### Setup:
 
