@@ -19,13 +19,13 @@ npm run-script build
 ```
 
 Get uniform (it does not support global installation yet) and
-symlink pretty-generator's executable into uniform directory.
-The uniform.sh script runs `javascript-formatter` in its directory.
+symlink pretty-generator's executable into uniform directory:
 ```
 git clone git@github.com:measurement-factory/uniform.git
 cd uniform/
-ln -s pretty-generator/lib/index.js javascript-formatter
+ln -s ../pretty-generator/lib/index.js javascript-formatter
 ```
+The uniform.sh script runs `javascript-formatter` in its directory.
 
 ### Usage:
 
