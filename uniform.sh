@@ -35,6 +35,19 @@ if !(git diff --name-only --exit-code $files); then
     fi
 fi
 
+cleanup() {
+    exit_code=$1
+
+    echo
+    echo "Something went wrong. You may want to undo with git reset --hard."
+
+    if test -n "$use_force"; then
+        echo "However, be extra careful because you have used --force."
+    fi
+
+    exit $exit_code
+}
+
 uniformdir=`dirname $0`
 for file in $files; do
     # run formatter on file
@@ -43,7 +56,7 @@ for file in $files; do
 
     if test $extension = "js"; then
         tempfile=`mktemp`
-        node "$uniformdir/javascript-formatter" $file 1>$tempfile || exit $?
-        mv $tempfile $file || exit $?
+        node "$uniformdir/javascript-formatter" $file 1>$tempfile || cleanup $?
+        mv $tempfile $file || cleanup $?
     fi
 done
