@@ -57,6 +57,7 @@ for file in $files; do
     if test $extension = "js"; then
         tempfile=`mktemp`
         node "$uniformdir/javascript-formatter" $file 1>$tempfile || cleanup $?
+        chmod --reference=$file $tempfile || cleanup $?
         mv $tempfile $file || cleanup $?
     fi
 done
