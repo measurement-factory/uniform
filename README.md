@@ -14,13 +14,8 @@ Depends on: [nodejs](http://nodejs.org), [pretty-generator](https://github.com/M
 
 For Ubuntu distributions, `nodejs-legacy` provides `node`.
 
-Get pretty-generator (it does not support global installation yet):
-```
-git clone git@github.com:Mark-Simulacrum/pretty-generator.git
-cd pretty-generator
-npm install
-npm run-script build
-```
+Follow the steps [here](https://github.com/Mark-Simulacrum/pretty-generator/blob/master/README.md#installation)
+to install pretty-generator.
 
 Get uniform (it does not support global installation yet) and
 symlink pretty-generator's executable into uniform directory:
