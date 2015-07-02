@@ -10,19 +10,19 @@ Currently, UniForm can only format git-controlled sources.
 
 ### Setup:
 
-Depends on: [nodejs](http://nodejs.org), [pretty-generator](https://github.com/Mark-Simulacrum/pretty-generator).
+Depends on: [nodejs](http://nodejs.org), [attractifier](https://github.com/Mark-Simulacrum/attractifier).
 
 For Ubuntu distributions, `nodejs-legacy` provides `node`.
 
-Follow the steps [here](https://github.com/Mark-Simulacrum/pretty-generator/blob/master/README.md#installation)
-to install pretty-generator.
+Follow the steps [here](https://github.com/Mark-Simulacrum/attractifier/blob/master/README.md#installation)
+to install attractifier.
 
 Get uniform (it does not support global installation yet) and
-symlink pretty-generator's executable into uniform directory:
+symlink attractifier's executable into uniform directory:
 ```
 git clone git@github.com:measurement-factory/uniform.git
 cd uniform/
-ln -s ../pretty-generator/lib/index.js javascript-formatter
+ln -s `which attractifier` javascript-formatter
 ```
 The uniform.sh script runs `javascript-formatter` in its directory.
 
