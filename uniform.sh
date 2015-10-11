@@ -25,10 +25,10 @@ if test -z "$files"; then
 fi
 
 if !(git diff --name-only --exit-code -- $files); then
-    echo "The files listed above have been changed since last commit."
+    echo "The files listed above are modified but not yet staged for commit."
 
     if test -z "$use_force"; then
-        echo "Commit these files or run with --force."
+        echo "Either stage/commit these files or run with --force."
         exit 1
     else
         echo "Proceeding anyway: --force given."
