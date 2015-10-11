@@ -55,9 +55,24 @@ echo "$files" | while IFS= read -r file; do
     extension="${filename##*.}"
 
     if test "$extension" = "js"; then
+        test -e "$uniformdir/javascript-formatter" || contunue
         tempfile=`mktemp`
         node "$uniformdir/javascript-formatter" "$file" 1> "$tempfile" || cleanup $?
         chmod --reference="$file" "$tempfile" || cleanup $?
         mv "$tempfile" "$file" || cleanup $?
     fi
+
+    if test "$extension" = "cc" -o "$extension" = "cpp" -o \
+        "$extension" = "h" -o "$extension" = "hpp";
+    then
+        command -v uncrustify >/dev/null 2>&1 || continue
+        uncrustify --no-backup "$file" || cleanup $?
+        # run again; uncrustify fails to fix some problems [correctly]
+        # during the first run!
+        uncrustify --no-backup "$file" || cleanup $?
+    fi
 done
+
+# TODO: Warn _once_ about each missing (needed but absent) formatter.
+
+exit 0
