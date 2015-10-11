@@ -24,7 +24,7 @@ if test -z "$files"; then
     exit 2
 fi
 
-if !(git diff --name-only --exit-code -- "$files"); then
+if !(git diff --name-only --exit-code -- $files); then
     echo "The files listed above have been changed since last commit."
 
     if test -z "$use_force"; then
