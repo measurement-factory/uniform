@@ -1,14 +1,37 @@
 #! /usr/bin/env sh
 
+# process command line options
+FilterBefore=""
+FilterAfter=""
 use_force=""
-if test "$1" = "--force"; then
-    use_force=1
-    shift
-fi
+while test ${#} -gt 0
+do
+    case "$1" in
+        --filter-before)
+            shift;
+            FilterBefore="$1";
+            ;;
 
-if test "$1" = "--"; then
-    shift
-fi
+        --filter-after)
+            shift;
+            FilterAfter="$1";
+            ;;
+
+        --force)
+            use_force=1;
+            ;;
+
+        --)
+            shift;
+            break;
+            ;;
+
+        *)
+            break;
+            ;;
+    esac
+    shift;
+done
 
 args="$@"
 
@@ -57,19 +80,23 @@ echo "$files" | while IFS= read -r file; do
     if test "$extension" = "js"; then
         test -e "$uniformdir/javascript-formatter" || contunue
         tempfile=`mktemp`
+        test -n "$FilterBefore" && $FilterBefore "$file"
         node "$uniformdir/javascript-formatter" "$file" 1> "$tempfile" || cleanup $?
         chmod --reference="$file" "$tempfile" || cleanup $?
         mv "$tempfile" "$file" || cleanup $?
+        test -n "$FilterAfter" && $FilterAfter "$file"
     fi
 
     if test "$extension" = "cc" -o "$extension" = "cpp" -o \
         "$extension" = "h" -o "$extension" = "hpp";
     then
         command -v uncrustify >/dev/null 2>&1 || continue
+        test -n "$FilterBefore" && $FilterBefore "$file"
         uncrustify --no-backup "$file" || cleanup $?
         # run again; uncrustify fails to fix some problems [correctly]
         # during the first run!
         uncrustify --no-backup "$file" || cleanup $?
+        test -n "$FilterAfter" && $FilterAfter "$file"
     fi
 done
 
