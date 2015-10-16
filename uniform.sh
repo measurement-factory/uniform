@@ -71,6 +71,28 @@ cleanup() {
     exit $exit_code
 }
 
+findConfig() {
+    fname="$1"
+
+    # in the current directory
+    test -e "./$fname" && echo "./$fname" && return;
+
+    # in the top-level directory of the current repository
+    topDir=`git rev-parse --show-toplevel`
+    test -e "$topDir/$fname" && echo "$topDir/$fname" && return;
+
+    # in the code-style directory of the current repository
+    csDir="$topDir/code-style"
+    test -e "$csDir/$fname" && echo "$csDir/$fname" && return;
+}
+
+uncrustifyOpt="--no-backup -L1"
+uncrustifyCfg="`findConfig uncrustify.cfg`"
+if test -n "$uncrustifyCfg"
+then
+    uncrustifyOpt="$uncrustifyOpt -c $uncrustifyCfg"
+fi
+
 uniformdir=`dirname $0`
 echo "$files" | while IFS= read -r file; do
     # run formatter on file
@@ -92,10 +114,10 @@ echo "$files" | while IFS= read -r file; do
     then
         command -v uncrustify >/dev/null 2>&1 || continue
         test -n "$FilterBefore" && $FilterBefore "$file"
-        uncrustify --no-backup -L1 "$file" || cleanup $?
+        uncrustify $uncrustifyOpt "$file" || cleanup $?
         # run again; uncrustify fails to fix some problems [correctly]
         # during the first run!
-        uncrustify --no-backup -L1 "$file" || cleanup $?
+        uncrustify $uncrustifyOpt "$file" || cleanup $?
         test -n "$FilterAfter" && $FilterAfter "$file"
     fi
 done
