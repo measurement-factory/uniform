@@ -92,10 +92,10 @@ echo "$files" | while IFS= read -r file; do
     then
         command -v uncrustify >/dev/null 2>&1 || continue
         test -n "$FilterBefore" && $FilterBefore "$file"
-        uncrustify --no-backup "$file" || cleanup $?
+        uncrustify --no-backup -L1 "$file" || cleanup $?
         # run again; uncrustify fails to fix some problems [correctly]
         # during the first run!
-        uncrustify --no-backup "$file" || cleanup $?
+        uncrustify --no-backup -L1 "$file" || cleanup $?
         test -n "$FilterAfter" && $FilterAfter "$file"
     fi
 done
