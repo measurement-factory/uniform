@@ -104,7 +104,16 @@ echo "$files" | while IFS= read -r file; do
         tempfile=`mktemp`
         test -n "$FilterBefore" && $FilterBefore "$file"
         node "$uniformdir/javascript-formatter" "$file" 1> "$tempfile" || cleanup $?
-        chmod --reference="$file" "$tempfile" || cleanup $?
+
+        # OS X lacks --reference in chmod.
+        unamestr=`uname`
+        if test "$unamestr" = "Darwin"; then
+            filemode=`stat -n -f "%p" "$file"`
+            chmod $filemode "$tempfile" || cleanup $?
+        else
+            chmod --reference="$file" "$tempfile" || cleanup $?
+        fi
+
         mv "$tempfile" "$file" || cleanup $?
         test -n "$FilterAfter" && $FilterAfter "$file"
     fi
