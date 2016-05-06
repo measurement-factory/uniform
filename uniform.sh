@@ -68,6 +68,7 @@ cleanup() {
         echo "However, be extra careful because you have used --force."
     fi
 
+    # XXX: exit only exits the loop if called from an echo|while loop below
     exit $exit_code
 }
 
@@ -133,4 +134,4 @@ done
 
 # TODO: Warn _once_ about each missing (needed but absent) formatter.
 
-exit 0
+exit $?
