@@ -119,8 +119,12 @@ echo "$files" | while IFS= read -r file; do
         test -n "$FilterAfter" && $FilterAfter "$file"
     fi
 
-    if test "$extension" = "cc" -o "$extension" = "cpp" -o \
-        "$extension" = "h" -o "$extension" = "hpp";
+    if test \
+        "$extension" = "c" -o \
+        "$extension" = "cc" -o \
+        "$extension" = "cpp" -o \
+        "$extension" = "h" -o \
+        "$extension" = "hpp";
     then
         command -v uncrustify >/dev/null 2>&1 || continue
         test -n "$FilterBefore" && $FilterBefore "$file"
